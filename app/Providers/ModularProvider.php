@@ -53,6 +53,8 @@ class ModularProvider extends ServiceProvider
                }
            });
        }
+       
+       $this->app['view']->addNamespace('Pub', base_path().'/resources/views/Pub');
     }
 
     public function getWebRoutes($mod, $sub, $relativePath, $path) 
