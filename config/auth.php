@@ -40,6 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        
+        //api_token
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'bash' => false,
+        ]
     ],
 
     /*
