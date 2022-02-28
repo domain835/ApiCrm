@@ -55,6 +55,7 @@ class ModularProvider extends ServiceProvider
        }
        
        $this->app['view']->addNamespace('Pub', base_path().'/resources/views/Pub');
+       $this->app['view']->addNamespace('Admin', base_path().'/resources/views/Admin');
     }
 
     public function getWebRoutes($mod, $sub, $relativePath, $path) 
