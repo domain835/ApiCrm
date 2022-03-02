@@ -80,7 +80,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
+    'locales' => ['ru','en'],
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +177,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         App\Providers\ModularProvider::class,
+        
+        \App\Services\Localization\LocalizationServiceProvider::class
+        
+        
 
     ],
 
