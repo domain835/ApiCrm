@@ -38,6 +38,7 @@ class Base extends Controller
         
         $menu = $this->getMenu();
         
+        
         $this->sidebar = view('Admin::layouts.parts.sidebar')->with([
             'menu' => $menu,
             'user' => $this->user
@@ -48,13 +49,38 @@ class Base extends Controller
     }
     
     private function getMenu() {
-        return Menu::make('menmuRenderer', function($m) {
+        return Menu::make('menuRenderer', function($m) {
             foreach (MenuModel::menuByType(MenuModel::MENU_TYPE_ADMIN)->get() as $item) {
                 $path = $item->path;
                 if($path && $this->checkRoute($path)) {
                     $path = route($path);
                 }
+                
+                if($item->parent == 0) {
+                    $m->add($item->title, $path)->id($item->id)->data('permissions',[]);
+                }
+                else {
+                    if($m->find($item->parent)) {
+                        $m->find($item->parent)->add($item->title, $path)->id($item->id)->data('permissions', []);
+                    }
+                }
             }
+        })->filter(function($item) {
+            //to do
+            return true;
         });
+    }
+    
+    private function checkRoute($path)
+    {
+        $routes = \Route::getRoutes()->getRoutes();
+        
+        foreach ($routes as $route) {
+            if($route->getName() == $path) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

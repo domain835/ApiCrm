@@ -4,12 +4,12 @@ namespace App\Modules\Admin\User\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as AuthUser;
-use \Laravel\Passport\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends AuthUser
 {
     use HasFactory, HasApiTokens;
-    
+
     protected $fillable = [
         'firstname',
         'lastname',
@@ -17,8 +17,8 @@ class User extends AuthUser
         'phone',
         'status',
     ];
-    
+
     protected $hidden = [
-      'password'  
+        'password'
     ];
 }
