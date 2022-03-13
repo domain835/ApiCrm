@@ -4,11 +4,19 @@ namespace App\Modules\Admin\Role\Controllers;
 
 use App\Modules\Admin\Dashboard\Classes\Base;
 use App\Modules\Admin\Role\Models\Role;
+use App\Modules\Admin\Role\Requests\RoleRequest;
+use App\Modules\Admin\Role\Services\RoleService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RoleController extends Base
 {
+    public function __construct(RoleService $roleService)
+    {
+        parent::__construct();
+        $this->service = $roleService;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +47,17 @@ class RoleController extends Base
      */
     public function create()
     {
-        //
+        $this->authorize('create', Role::class);
+        
+        $this->title = "Title Role Create";
+        
+        $this->content = view('Admin::Role.create')->
+                            with([
+                                'title' => $this->title,
+                            ])->
+                            render();
+        
+        return $this->renderOutput();
     }
 
     /**
@@ -48,9 +66,13 @@ class RoleController extends Base
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        //
+        
+        $this->service->save($request, new Role());
+        return \Redirect::route('roles.index')->with([
+            'message' => __('Success')
+        ]);
     }
 
     /**
@@ -72,7 +94,18 @@ class RoleController extends Base
      */
     public function edit(Role $role)
     {
-        //
+        $this->authorize('edit', Role::class);
+        
+        $this->title = "Title Role Edit";
+        
+        $this->content = view('Admin::Role.edit')->
+                            with([
+                                'title' => $this->title,
+                                'item' => $role,
+                            ])->
+                            render();
+        
+        return $this->renderOutput();
     }
 
     /**
@@ -82,9 +115,12 @@ class RoleController extends Base
      * @param  \App\Modules\Admin\Role\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
-        //
+        $this->service->save($request, $role);
+        return \Redirect::route('roles.index')->with([
+            'message' => __('Success')
+        ]);
     }
 
     /**
@@ -95,6 +131,9 @@ class RoleController extends Base
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return \Redirect::route('roles.index')->with([
+            'message' => __('Success')
+        ]);
     }
 }
