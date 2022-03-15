@@ -65,7 +65,13 @@ class PermissionsController extends Base
     public function store(Request $request)
     {
         //
-        dd('Hi');
+        $this->authorize('create', Role::class);
+        
+        $this->service->save($request);
+        
+        return back()->with([
+            'message' => __('Success')
+        ]);
     }
 
     /**
